@@ -1,0 +1,13 @@
+const categoriesData = {
+    "Animales": ["León", "Elefante", "Tigre", "Jirafa", "Canguro", "Delfín", "Pingüino", "Oso", "Lobo", "Águila", "Serpiente", "Cocodrilo", "Mono", "Caballo", "Vaca", "Oveja", "Cerdo", "Gato", "Perro", "Conejo"],
+    "Comida": ["Pizza", "Hamburguesa", "Sushi", "Taco", "Pasta", "Ensalada", "Sopa", "Helado", "Pastel", "Chocolate", "Queso", "Pan", "Arroz", "Pollo", "Carne", "Pescado", "Huevo", "Fruta", "Verdura", "Galleta"],
+    "Países": ["México", "España", "Argentina", "Colombia", "Chile", "Perú", "Brasil", "Francia", "Italia", "Japón", "China", "India", "Estados Unidos", "Canadá", "Australia", "Alemania", "Rusia", "Egipto", "Corea del Sur", "Tailandia"],
+    "Profesiones": ["Médico", "Abogado", "Profesor", "Ingeniero", "Arquitecto", "Bombero", "Policía", "Cocinero", "Actor", "Cantante", "Escritor", "Pintor", "Músico", "Deportista", "Programador", "Diseñador", "Piloto", "Astronauta", "Mecánico", "Carpintero"],
+    "Películas": ["Titanic", "Avatar", "Star Wars", "Harry Potter", "Matrix", "Jurassic Park", "El Rey León", "Toy Story", "Shrek", "Los Vengadores", "Batman", "Spider-Man", "Superman", "Indiana Jones", "ET", "Tiburón", "Rocky", "Gladiador", "Coco", "Up"],
+    "Deportes": ["Tenis", "Baloncesto", "Béisbol", "Boxeo", "Natación", "Atletismo", "Voleibol", "Gimnasia", "Ciclismo", "Judo", "Karate", "Golf", "Rugby", "Hockey", "Esquí", "Surf", "Skate", "Arco", "Esgrima", "Lucha"],
+    "Fútbol": ["Messi", "Cristiano Ronaldo", "Neymar", "Mbappé", "Lewandowski", "Salah", "Kane", "De Bruyne", "Modric", "Ramos", "Van Dijk", "Alisson", "Ederson", "Sterling", "Son Heung-min", "Griezmann", "Barcelona", "Real Madrid", "Manchester United", "Manchester City", "Liverpool", "Chelsea", "Arsenal", "Bayern Munich", "PSG", "Juventus"],
+    "Cosas de casa": ["Sofá", "Cama", "Mesa", "Silla", "Televisor", "Refrigerador", "Microondas", "Horno", "Lavadora", "Secadora", "Plancha", "Aspiradora", "Lámpara", "Espejo", "Cuadro", "Reloj", "Alfombra", "Cortina", "Maceta", "Cojín"],
+    "Vehículos": ["Coche", "Motocicleta", "Bicicleta", "Autobús", "Camión", "Tren", "Metro", "Avión", "Helicóptero", "Barco", "Submarino", "Yate", "Velero", "Canoa", "Patineta", "Patines", "Tractor", "Ambulancia", "Excavadora", "Cohete"],
+    "Instrumentos": ["Guitarra", "Piano", "Batería", "Bajo", "Violín", "Flauta", "Saxofón", "Trompeta", "Clarinete", "Trombón", "Arpa", "Acordeón", "Armónica", "Pandereta", "Maracas", "Xilófono", "Sintetizador", "Órgano", "Ukelele", "Castañuelas"],
+    "Ropa": ["Camisa", "Pantalón", "Falda", "Vestido", "Chaqueta", "Abrigo", "Suéter", "Sudadera", "Camiseta", "Shorts", "Traje", "Corbata", "Zapatos", "Zapatillas", "Botas", "Sandalias", "Calcetines", "Sombrero", "Bufanda", "Guantes"]
+};

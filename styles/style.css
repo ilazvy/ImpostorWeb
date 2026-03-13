@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
+    color: #f8fafc;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* Animaciones */
+.fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+.pop-in {
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Utilidades */
+.hidden-screen {
+    display: none !important;
+}
+
+/* Inputs */
+input[type="text"] {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+input[type="text"]:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+}
+
+/* Botón Hold (Mantener Presionado) */
+.hold-btn {
+    transition: all 0.2s;
+    box-shadow: 0 8px 0 #be123c, 0 0 15px rgba(244, 63, 94, 0.3);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+}
+
+.hold-btn:hover {
+    box-shadow: 0 10px 0 #be123c, 0 0 25px rgba(244, 63, 94, 0.6);
+    transform: translateY(-2px);
+}
+
+.hold-btn:active,
+.hold-btn.active-touch {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 #be123c, 0 0 15px rgba(244, 63, 94, 0.3);
+}
+
+/* Timer */
+#timer-display {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    text-shadow: 0 0 20px rgba(244, 63, 94, 0.3);
+}
+
+#timer-display.text-rose-500 {
+    animation: timerPulse 0.5s ease-in-out infinite;
+    text-shadow: 0 0 30px rgba(244, 63, 94, 1);
+}
+
+@keyframes timerPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Scroll personalizado */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(75, 85, 99, 0.1);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #475569 0%, #334155 100%);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #64748b 0%, #475569 100%);
+}
+
+/* ===== BOTONES ===== */
+button {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.bg-brand-accent {
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-brand-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.5s;
+}
+
+.bg-brand-accent:hover::before {
+    left: 100%;
+}
+
+/* ===== MODAL ===== */
+#modal-round-end {
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+#modal-round-end > div {
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ===== CARDS ===== */
+.rounded-3xl,
+.rounded-2xl {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.border-brand-accent {
+    transition: box-shadow 0.3s;
+}
+
+.border-brand-accent:hover {
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+}
+
+.animate-bounce-in {
+    animation: bounceIn 0.4s ease-out;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 640px) {
+    body {
+        font-size: 14px;
+    }
+}
