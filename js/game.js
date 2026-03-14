@@ -92,6 +92,7 @@ const game = {
         // 4. Empezar turnos
         this.state.currentTurnIndex = 0;
         this.state.gameStartTime = Date.now();
+        this.state.votes = []; // Limpiar votos anteriores
         this.prepareTurn();
     },
 
@@ -183,6 +184,8 @@ const game = {
         const maxVotes = this.state.playersCount;
         if (this.state.votes[playerIndex] < maxVotes) {
             this.state.votes[playerIndex]++;
+            // Reproducir sonido de voto
+            soundManager.playVoteSound();
             // Re-renderizar la grilla
             app.renderVotingGrid();
         }
@@ -229,6 +232,8 @@ const game = {
         resultDiv.classList.remove('hidden');
         
         if (civilsWin) {
+            // Civiles ganan
+            soundManager.playWinSound();
             resultDiv.classList.remove('border-rose-600', 'bg-red-900/30');
             resultDiv.classList.add('border-emerald-600', 'bg-emerald-900/30');
             winnerText.textContent = '✓ ¡CIVILES GANAN!';
@@ -236,6 +241,8 @@ const game = {
             winnerText.classList.add('text-emerald-500');
             descriptionText.innerHTML = `<span class="font-bold text-emerald-400">${this.state.playerNames[votedPlayerIndex]}</span> era el IMPOSTOR 🎉`;
         } else {
+            // Impostores ganan
+            soundManager.playLoseSound();
             resultDiv.classList.remove('border-emerald-600', 'bg-emerald-900/30');
             resultDiv.classList.add('border-rose-600', 'bg-red-900/30');
             winnerText.textContent = '✗ ¡IMPOSTORES GANAN!';
