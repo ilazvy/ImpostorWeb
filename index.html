@@ -2,249 +2,268 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag crucial para que se vea bien en celulares -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>El Impostor</title>
-    
-    <!-- Tailwind CSS para los estilos rápidos y modernos -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Phosphor Icons: Iconos hermosos que se instalan con esta sola línea -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- Configuración de colores personalizados para Tailwind -->
+    <!-- Fonts: Bebas Neue (display) + Barlow (body) + Barlow Condensed (labels) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind (kept for any JS-injected utility classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            dark: '#0f172a',
-                            light: '#1e293b',
-                            accent: '#f43f5e'
-                        }
+                        brand: { dark: '#05070e', light: '#0d1221', accent: '#f43f5e' }
                     }
                 }
             }
         }
     </script>
 
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <link rel="stylesheet" href="styles/style.css">
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-brand-accent selection:text-white">
+<body>
 
-    <!-- Contenedor principal (responsivo: móvil y escritorio) -->
-    <main class="flex-1 w-full max-w-2xl mx-auto relative px-4 sm:px-6 py-6 sm:py-8 flex flex-col justify-center min-h-screen">
+    <!-- Fixed background layers -->
+    <div class="bg-layer" aria-hidden="true"></div>
+    <div class="bg-grid"  aria-hidden="true"></div>
 
-        <!-- 1. PANTALLA DE INICIO -->
-        <section id="screen-home" class="flex flex-col items-center text-center fade-in">
-            <i class="ph-fill ph-mask-happy text-6xl sm:text-8xl text-brand-accent mb-4"></i>
-            <h1 class="text-3xl sm:text-5xl font-black tracking-tight mb-2">EL IMPOSTOR</h1>
-            <p class="text-slate-400 mb-10 text-sm sm:text-lg">Descubre quién es el infiltrado... o miente para sobrevivir.</p>
-            <button onclick="app.showScreen('screen-setup')" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-2xl text-base sm:text-xl transition-colors flex items-center justify-center gap-2">
+    <main class="game-wrap">
+
+        <!-- ════════════════════════════════════════
+             1. HOME
+        ════════════════════════════════════════ -->
+        <section id="screen-home" class="screen screen--center fade-in">
+            <span class="eyebrow">Juego de mesa digital</span>
+            <i class="ph-fill ph-mask-happy home-icon"></i>
+            <h1 class="home-title">EL<br>IMPOSTOR</h1>
+            <p class="home-sub">Descubre quién es el infiltrado...<br>o miente para sobrevivir.</p>
+            <button onclick="app.showScreen('screen-setup')" class="btn btn--primary btn--lg btn--full">
                 <i class="ph-bold ph-play"></i> Iniciar Juego
             </button>
         </section>
 
-        <!-- 2. PANTALLA DE SETUP (Jugadores, Impostores y Minutos) -->
-        <section id="screen-setup" class="flex flex-col h-full justify-center hidden-screen fade-in overflow-y-auto">
-            <h2 class="text-3xl font-bold mb-8 text-center"><i class="ph-bold ph-gear align-middle mr-2"></i>Ajustes</h2>
-            
-            <!-- Contador de Jugadores -->
-            <div class="bg-brand-light p-6 rounded-3xl mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-xl font-semibold flex items-center gap-2"><i class="ph-bold ph-users text-brand-accent"></i> Jugadores</span>
-                    <span id="display-players" class="text-3xl font-black text-brand-accent">4</span>
-                </div>
-                <div class="flex gap-4">
-                    <button onclick="game.updatePlayers(-1)" class="flex-1 bg-slate-700 hover:bg-slate-600 p-4 rounded-xl text-2xl font-bold transition-colors">−</button>
-                    <button onclick="game.updatePlayers(1)" class="flex-1 bg-slate-700 hover:bg-slate-600 p-4 rounded-xl text-2xl font-bold transition-colors">+</button>
+        <!-- ════════════════════════════════════════
+             2. SETUP
+        ════════════════════════════════════════ -->
+        <section id="screen-setup" class="screen screen--scroll hidden-screen fade-in">
+            <header class="screen-head">
+                <h2 class="screen-title"><i class="ph-bold ph-sliders"></i> Ajustes</h2>
+            </header>
+
+            <div class="card gap-bottom">
+                <div class="counter-row">
+                    <div class="counter-info">
+                        <i class="ph-bold ph-users red-icon"></i>
+                        <span class="counter-label">Jugadores</span>
+                    </div>
+                    <div class="counter-controls">
+                        <button onclick="game.updatePlayers(-1)"  class="btn btn--count">−</button>
+                        <span id="display-players"  class="count-val">4</span>
+                        <button onclick="game.updatePlayers(1)"   class="btn btn--count">+</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Contador de Impostores -->
-            <div class="bg-brand-light p-6 rounded-3xl mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-xl font-semibold flex items-center gap-2"><i class="ph-bold ph-mask-sad text-brand-accent"></i> Impostores</span>
-                    <span id="display-impostors" class="text-3xl font-black text-brand-accent">1</span>
-                </div>
-                <div class="flex gap-4">
-                    <button onclick="game.updateImpostors(-1)" class="flex-1 bg-slate-700 hover:bg-slate-600 p-4 rounded-xl text-2xl font-bold transition-colors">−</button>
-                    <button onclick="game.updateImpostors(1)" class="flex-1 bg-slate-700 hover:bg-slate-600 p-4 rounded-xl text-2xl font-bold transition-colors">+</button>
-                </div>
-            </div>
-
-            <!-- Selector de Minutos -->
-            <div class="bg-brand-light p-6 rounded-3xl mb-8">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-xl font-semibold flex items-center gap-2"><i class="ph-bold ph-timer text-brand-accent"></i> Tiempo</span>
-                    <span id="display-minutes" class="text-3xl font-black text-brand-accent">5 min</span>
-                </div>
-                <div class="flex gap-4">
-                    <button onclick="game.updateMinutes(-1)" class="flex-1 bg-slate-700 hover:bg-slate-600 p-4 rounded-xl text-2xl font-bold transition-colors">−</button>
-                    <button onclick="game.updateMinutes(1)" class="flex-1 bg-slate-700 hover:bg-slate-600 p-4 rounded-xl text-2xl font-bold transition-colors">+</button>
+            <div class="card gap-bottom">
+                <div class="counter-row">
+                    <div class="counter-info">
+                        <i class="ph-bold ph-mask-sad red-icon"></i>
+                        <span class="counter-label">Impostores</span>
+                    </div>
+                    <div class="counter-controls">
+                        <button onclick="game.updateImpostors(-1)" class="btn btn--count">−</button>
+                        <span id="display-impostors" class="count-val">1</span>
+                        <button onclick="game.updateImpostors(1)"  class="btn btn--count">+</button>
+                    </div>
                 </div>
             </div>
 
-            <button onclick="app.showScreen('screen-names')" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-colors flex items-center justify-center gap-2">
+            <div class="card gap-bottom-lg">
+                <div class="counter-row">
+                    <div class="counter-info">
+                        <i class="ph-bold ph-timer red-icon"></i>
+                        <span class="counter-label">Tiempo</span>
+                    </div>
+                    <div class="counter-controls">
+                        <button onclick="game.updateMinutes(-1)" class="btn btn--count">−</button>
+                        <span id="display-minutes" class="count-val">5 min</span>
+                        <button onclick="game.updateMinutes(1)"  class="btn btn--count">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="app.showScreen('screen-names')" class="btn btn--primary btn--lg btn--full gap-bottom-sm">
                 Ingresar Nombres <i class="ph-bold ph-arrow-right"></i>
             </button>
-            <button onclick="app.showScreen('screen-home')" class="mt-4 text-slate-400 font-medium py-2 hover:text-slate-200">Volver</button>
+            <button onclick="app.showScreen('screen-home')" class="btn btn--ghost btn--full">Volver</button>
         </section>
 
-        <!-- 2.5 PANTALLA DE NOMBRES -->
-        <section id="screen-names" class="flex flex-col h-full hidden-screen fade-in overflow-y-auto">
-            <h2 class="text-3xl font-bold mb-8 text-center"><i class="ph-bold ph-users align-middle mr-2"></i>Nombres</h2>
-            <p class="text-slate-400 text-center mb-4 text-sm">Ingresa los nombres de cada jugador</p>
-            
-            <div id="names-input-container" class="flex flex-col gap-4 overflow-y-auto pb-4 custom-scrollbar">
-                <!-- Se inyectan con JS -->
+        <!-- ════════════════════════════════════════
+             2.5 NAMES
+        ════════════════════════════════════════ -->
+        <section id="screen-names" class="screen screen--scroll hidden-screen fade-in">
+            <header class="screen-head">
+                <h2 class="screen-title"><i class="ph-bold ph-users"></i> Jugadores</h2>
+                <p class="screen-sub">¿Cómo se llaman?</p>
+            </header>
+
+            <div id="names-input-container" class="names-list custom-scrollbar"></div>
+
+            <footer class="screen-foot">
+                <button onclick="app.showScreen('screen-categories')" class="btn btn--primary btn--lg btn--full gap-bottom-sm">
+                    Continuar <i class="ph-bold ph-arrow-right"></i>
+                </button>
+                <button onclick="app.showScreen('screen-setup')" class="btn btn--ghost btn--full">Volver</button>
+            </footer>
+        </section>
+
+        <!-- ════════════════════════════════════════
+             3. CATEGORIES
+        ════════════════════════════════════════ -->
+        <section id="screen-categories" class="screen screen--scroll hidden-screen fade-in">
+            <header class="screen-head">
+                <h2 class="screen-title">Categorías</h2>
+                <p class="screen-sub">Elige el tema de esta ronda</p>
+            </header>
+
+            <div id="categories-grid" class="cat-grid"></div>
+
+            <button onclick="app.showScreen('screen-setup')" class="btn btn--ghost btn--full" style="margin-top:1.5rem">Volver</button>
+        </section>
+
+        <!-- ════════════════════════════════════════
+             4. STARTER
+        ════════════════════════════════════════ -->
+        <section id="screen-starter" class="screen screen--center hidden-screen fade-in">
+            <i class="ph-duotone ph-arrow-circle-right starter-icon"></i>
+            <h2 class="screen-title gap-bottom">¡Empieza!</h2>
+            <div class="card card--red text-center gap-bottom-lg" style="width:100%">
+                <p class="tag-text gap-bottom-xs">Primer turno para</p>
+                <p id="starter-player-name" class="big-name">Jugador 1</p>
             </div>
-            
-            <button onclick="app.showScreen('screen-categories')" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-colors mt-auto">
-                Continuar <i class="ph-bold ph-arrow-right"></i>
+            <p class="body-copy text-center gap-bottom-lg">Todos ya conocen sus roles.<br>¡Que comience la discusión!</p>
+            <button onclick="app.startGameDiscussion()" class="btn btn--primary btn--lg btn--full">
+                <i class="ph-bold ph-play"></i> Comenzar
             </button>
-            <button onclick="app.showScreen('screen-setup')" class="mt-4 text-slate-400 font-medium py-2 hover:text-slate-200">Volver</button>
         </section>
 
-        <!-- 3. PANTALLA DE CATEGORÍAS -->
-        <section id="screen-categories" class="flex flex-col h-full hidden-screen fade-in">
-            <h2 class="text-3xl font-bold mb-2 text-center mt-4">Categorías</h2>
-            <p class="text-slate-400 text-center mb-8">Elige el tema que deseas jugar</p>
-            
-            <div id="categories-grid" class="grid grid-cols-2 gap-4 overflow-visible pb-8 flex-1">
-                <!-- Se inyectan con JS -->
-            </div>
-            
-            <button onclick="app.showScreen('screen-setup')" class="mt-6 text-slate-400 font-medium py-4 hover:text-slate-200">Volver</button>
-        </section>
-
-        <!-- 4. PANTALLA DE QUIÉN EMPIEZA -->
-        <section id="screen-starter" class="flex flex-col items-center justify-center text-center hidden-screen h-full fade-in">
-            <i class="ph-duotone ph-arrow-circle-right text-8xl text-brand-accent mb-6 animate-bounce"></i>
-            <h2 class="text-3xl font-bold mb-4">¡Empieza!</h2>
-            <div class="bg-brand-light p-8 rounded-[2rem] w-full border-2 border-brand-accent mb-10">
-                <p class="text-slate-400 text-lg mb-2">El primer turno es para:</p>
-                <p id="starter-player-name" class="text-5xl font-black text-brand-accent">Jugador 1</p>
-            </div>
-            <p class="text-slate-300 text-center mb-6">Todos ya conocen sus roles. ¡Que comience la discusión!</p>
-            <button onclick="app.startGameDiscussion()" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
-                <i class="ph-bold ph-play"></i> Comenzar Discusión
-            </button>
-        </section>
-
-        <!-- 5. PANTALLA DE PASAR EL TELÉFONO -->
-        <section id="screen-pass" class="flex flex-col items-center justify-center text-center hidden-screen h-full fade-in">
-            <div class="bg-brand-light p-8 rounded-[2rem] w-full border border-slate-700">
-                <i class="ph-duotone ph-device-mobile text-7xl text-brand-accent mb-6 animate-pulse"></i>
-                <h3 class="text-xl text-slate-300 font-medium mb-2">Pásale el teléfono al</h3>
-                <h2 id="pass-player-name" class="text-4xl font-black text-white mb-8">Jugador 1</h2>
-                
-                <button onclick="app.showScreen('screen-reveal')" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-transform hover:scale-105">
-                    Soy Yo <i class="ph-bold ph-check-circle ml-1"></i>
+        <!-- ════════════════════════════════════════
+             5. PASS PHONE
+        ════════════════════════════════════════ -->
+        <section id="screen-pass" class="screen screen--center hidden-screen fade-in">
+            <div class="card text-center" style="width:100%">
+                <i class="ph-duotone ph-device-mobile pass-icon"></i>
+                <p class="tag-text gap-bottom-xs">Pásale el teléfono a</p>
+                <h2 id="pass-player-name" class="big-name gap-bottom-lg">Jugador 1</h2>
+                <button onclick="app.showScreen('screen-reveal')" class="btn btn--primary btn--lg btn--full">
+                    Soy Yo <i class="ph-bold ph-check-circle"></i>
                 </button>
             </div>
         </section>
 
-        <!-- 5. PANTALLA DE REVELAR ROL (MANTENER PRESIONADO) -->
-        <section id="screen-reveal" class="flex flex-col items-center justify-center h-full text-center hidden-screen fade-in">
-            <div class="mb-8">
-                <h3 id="reveal-player-name" class="text-2xl font-bold text-slate-400 mb-2">Jugador 1</h3>
-                <p class="text-sm text-slate-500">Asegúrate de que nadie esté mirando</p>
+        <!-- ════════════════════════════════════════
+             6. REVEAL ROL
+        ════════════════════════════════════════ -->
+        <section id="screen-reveal" class="screen screen--center hidden-screen fade-in">
+            <div class="reveal-header">
+                <h3 id="reveal-player-name" class="reveal-name">Jugador 1</h3>
+                <p class="reveal-hint">Asegúrate de que nadie esté mirando</p>
             </div>
 
-            <!-- Contenedor donde aparece la palabra o el rol -->
-            <div id="secret-container" class="bg-brand-light w-full h-48 rounded-[2rem] flex flex-col items-center justify-center mb-10 border-2 border-dashed border-slate-600 transition-all duration-300">
-                <i class="ph-duotone ph-eye-slash text-5xl text-slate-500 mb-2" id="secret-icon"></i>
-                <p id="secret-text" class="text-2xl font-bold text-slate-500">???</p>
-                <p id="secret-subtext" class="text-sm text-slate-400 mt-2 hidden">Eres el impostor</p>
+            <div id="secret-container" class="secret-box">
+                <i class="ph-duotone ph-eye-slash secret-eye" id="secret-icon"></i>
+                <p id="secret-text" class="secret-word">???</p>
+                <p id="secret-subtext" class="secret-role hidden">Eres el impostor</p>
             </div>
 
-            <button id="btn-hold" class="hold-btn w-full bg-brand-accent text-white font-black py-6 px-8 rounded-[2rem] text-xl flex items-center justify-center gap-3 select-none">
-                <i class="ph-bold ph-hand-pointing text-2xl"></i> MANTENER PRESIONADO
+            <button id="btn-hold" class="hold-btn select-none">
+                <i class="ph-bold ph-hand-pointing"></i>
+                MANTENER PRESIONADO
             </button>
 
-            <!-- Botón para pasar al siguiente jugador, aparece después de soltar -->
-            <button id="btn-next-turn" onclick="game.nextTurn()" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl mt-6 hidden fade-in">
+            <button id="btn-next-turn" onclick="game.nextTurn()" class="btn btn--primary btn--lg btn--full hidden fade-in" style="margin-top:1.5rem">
                 Terminar mi turno <i class="ph-bold ph-check"></i>
             </button>
         </section>
 
-        <!-- 6. PANTALLA DE JUEGO (Todos vieron su rol) -->
-        <section id="screen-game" class="flex flex-col items-center justify-center text-center hidden-screen h-full fade-in overflow-y-auto">
-            <i class="ph-fill ph-chat-circle-dots text-8xl text-brand-accent mb-6"></i>
-            <h2 class="text-4xl font-black mb-4">¡A DISCUTIR!</h2>
-            <p class="text-slate-300 text-lg mb-2">Hagan una pregunta cada uno relacionada con la palabra secreta.</p>
-            <p class="text-slate-400 text-md mb-10">El objetivo es encontrar al impostor (o impostores) sin revelar la palabra.</p>
-            
-            <!-- Temporizador -->
-            <div class="bg-brand-light p-6 rounded-2xl w-full mb-8 border-2 border-brand-accent">
-                <p class="text-sm text-slate-400 uppercase tracking-wider font-bold mb-2">Tiempo restante</p>
-                <p id="timer-display" class="text-5xl font-black text-brand-accent font-mono">5:00</p>
+        <!-- ════════════════════════════════════════
+             7. DISCUSSION / GAME
+        ════════════════════════════════════════ -->
+        <section id="screen-game" class="screen screen--center hidden-screen fade-in">
+            <i class="ph-fill ph-chat-circle-dots game-icon"></i>
+            <h2 class="game-shout">¡A DISCUTIR!</h2>
+            <p class="body-copy text-center gap-bottom-sm">Cada quien hace una pregunta sobre la palabra secreta.</p>
+            <p class="muted-copy text-center gap-bottom-lg">El objetivo: encontrar al impostor sin revelar la palabra.</p>
+
+            <div class="card card--red text-center gap-bottom-sm" style="width:100%">
+                <p class="tag-text gap-bottom-xs">Tiempo restante</p>
+                <p id="timer-display" class="timer">5:00</p>
             </div>
 
-            <!-- Categoría -->
-            <div class="bg-brand-light p-6 rounded-2xl w-full mb-8">
-                <p class="text-sm text-slate-400 uppercase tracking-wider font-bold mb-1">Categoría jugada</p>
-                <p id="final-category" class="text-2xl font-bold text-white">Animales</p>
+            <div class="card text-center gap-bottom-lg" style="width:100%">
+                <p class="tag-text gap-bottom-xs">Categoría</p>
+                <p id="final-category" class="cat-name">Animales</p>
             </div>
 
-            <button onclick="app.showScreen('screen-voting')" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-colors mb-4">
-                <i class="ph-bold ph-hand-voting align-middle mr-2"></i> Ir a Votación
+            <button onclick="app.showScreen('screen-voting')" class="btn btn--primary btn--lg btn--full gap-bottom-sm">
+                <i class="ph-bold ph-hand-voting"></i> Ir a Votación
             </button>
-
-            <button onclick="app.endGame()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-colors">
-                <i class="ph-bold ph-clock align-middle mr-2"></i> Fin del Tiempo
+            <button onclick="app.endGame()" class="btn btn--secondary btn--full">
+                <i class="ph-bold ph-clock"></i> Fin del Tiempo
             </button>
         </section>
 
-        <!-- 7. PANTALLA DE VOTACIÓN -->
-        <section id="screen-voting" class="flex flex-col h-full hidden-screen fade-in overflow-y-auto">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-2 text-center"><i class="ph-bold ph-hand-voting align-middle mr-2"></i>Votación</h2>
-            <p class="text-slate-400 text-center mb-6 text-sm sm:text-base">Vota al jugador que crees que es el impostor</p>
-            
-            <!-- Grid de Jugadores para Votación -->
-            <div id="voting-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 overflow-y-auto pb-4 custom-scrollbar flex-1 mb-6">
-                <!-- Se inyectan con JS -->
-            </div>
+        <!-- ════════════════════════════════════════
+             8. VOTING
+        ════════════════════════════════════════ -->
+        <section id="screen-voting" class="screen screen--scroll hidden-screen fade-in">
+            <header class="screen-head">
+                <h2 class="screen-title"><i class="ph-bold ph-hand-voting"></i> Votación</h2>
+                <p class="screen-sub">¿Quién crees que es el impostor?</p>
+            </header>
 
-            <!-- Resultado de Votación (oculto inicialmente) -->
-            <div id="voting-result" class="hidden bg-brand-light p-6 rounded-2xl mb-6 border-2 text-center">
-                <p id="voting-winner" class="text-2xl font-bold mb-4">Ganador</p>
-                <p id="voting-description" class="text-slate-300 mb-6">Descripción</p>
-                <button onclick="app.showScreen('screen-home')" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-colors">
-                    <i class="ph-bold ph-arrows-clockwise align-middle mr-2"></i> Volver al Inicio
+            <div id="voting-grid" class="vote-grid custom-scrollbar"></div>
+
+            <div id="voting-result" class="hidden card text-center gap-bottom">
+                <p id="voting-winner"      class="vote-winner gap-bottom-sm">Ganador</p>
+                <p id="voting-description" class="body-copy gap-bottom-lg">Descripción</p>
+                <button onclick="app.showScreen('screen-home')" class="btn btn--primary btn--lg btn--full">
+                    <i class="ph-bold ph-arrows-clockwise"></i> Volver al Inicio
                 </button>
             </div>
 
-            <!-- Botones de Acción -->
-            <div id="voting-actions" class="flex gap-4">
-                <button onclick="app.showScreen('screen-game')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 sm:px-6 rounded-2xl text-sm sm:text-base transition-colors">
-                    <i class="ph-bold ph-arrow-left align-middle mr-1"></i> Volver
+            <div id="voting-actions" class="vote-actions">
+                <button onclick="app.showScreen('screen-game')" class="btn btn--secondary flex-1">
+                    <i class="ph-bold ph-arrow-left"></i> Volver
                 </button>
-                <button onclick="game.finishVoting()" class="flex-1 bg-brand-accent hover:bg-rose-600 text-white font-bold py-3 px-4 sm:px-6 rounded-2xl text-sm sm:text-base transition-colors">
-                    <i class="ph-bold ph-check align-middle mr-1"></i> Finalizar
+                <button onclick="game.finishVoting()" class="btn btn--primary flex-1">
+                    <i class="ph-bold ph-check"></i> Finalizar
                 </button>
             </div>
         </section>
 
     </main>
 
-    <!-- MODAL: Fin de Ronda -->
-    <div id="modal-round-end" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-        <div class="bg-brand-light rounded-3xl p-6 sm:p-8 max-w-sm w-full border-2 border-brand-accent animate-bounce-in">
-            <div class="flex justify-center mb-4">
-                <i class="ph-duotone ph-warning text-6xl text-brand-accent"></i>
-            </div>
-            <h3 class="text-2xl sm:text-3xl font-black text-center mb-4">¡Ronda Finalizada!</h3>
-            <p id="modal-message" class="text-slate-300 text-center mb-6 text-sm sm:text-base">La ronda ha terminado. Vuelve a jugar para otra partida</p>
-            <button onclick="app.closeModal()" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-2xl text-base sm:text-xl transition-colors">
-                Aceptar
-            </button>
+    <!-- ════════════════════════════════════════
+         MODAL — Round End
+    ════════════════════════════════════════ -->
+    <div id="modal-round-end" class="modal hidden">
+        <div class="modal-box">
+            <i class="ph-duotone ph-warning modal-icon"></i>
+            <h3 class="modal-title">¡Ronda Finalizada!</h3>
+            <p id="modal-message" class="modal-body">La ronda ha terminado. ¡Vuelve a jugar!</p>
+            <button onclick="app.closeModal()" class="btn btn--primary btn--lg btn--full">Aceptar</button>
         </div>
     </div>
 
-    <!-- SCRIPTS: Carga el orden exacto para que todo funcione -->
     <script src="data/words.js"></script>
     <script src="js/categories.js"></script>
     <script src="js/game.js"></script>
