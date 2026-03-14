@@ -112,7 +112,7 @@
             <h2 class="text-3xl font-bold mb-2 text-center mt-4">Categorías</h2>
             <p class="text-slate-400 text-center mb-8">Elige el tema que deseas jugar</p>
             
-            <div id="categories-grid" class="grid grid-cols-2 gap-4 overflow-y-auto pb-4 custom-scrollbar flex-1">
+            <div id="categories-grid" class="grid grid-cols-2 gap-4 overflow-visible pb-8 flex-1">
                 <!-- Se inyectan con JS -->
             </div>
             
@@ -140,7 +140,7 @@
                 <h3 class="text-xl text-slate-300 font-medium mb-2">Pásale el teléfono al</h3>
                 <h2 id="pass-player-name" class="text-4xl font-black text-white mb-8">Jugador 1</h2>
                 
-                <button onclick="app.showScreen('screen-reveal')" class="w-full bg-white text-brand-dark font-bold py-4 px-8 rounded-2xl text-xl transition-transform hover:scale-105">
+                <button onclick="app.showScreen('screen-reveal')" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-transform hover:scale-105">
                     Soy Yo <i class="ph-bold ph-check-circle ml-1"></i>
                 </button>
             </div>
@@ -165,7 +165,7 @@
             </button>
 
             <!-- Botón para pasar al siguiente jugador, aparece después de soltar -->
-            <button id="btn-next-turn" onclick="game.nextTurn()" class="w-full bg-white text-brand-dark font-bold py-4 px-8 rounded-2xl text-xl mt-6 hidden fade-in">
+            <button id="btn-next-turn" onclick="game.nextTurn()" class="w-full bg-brand-accent hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-2xl text-xl mt-6 hidden fade-in">
                 Terminar mi turno <i class="ph-bold ph-check"></i>
             </button>
         </section>

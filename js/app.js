@@ -1,3 +1,30 @@
+// ===== SISTEMA DE SONIDOS =====
+const soundManager = {
+    // Función para reproducir un sonido
+    play(soundName) {
+        const audio = new Audio(`sfx/${soundName}.mp3`);
+        audio.volume = 0.7;
+        audio.play().catch(err => console.log('Error reproduciendo sonido:', err));
+    },
+
+    // Reproducir sonido de voto
+    playVoteSound() {
+        this.play('votesfx');
+    },
+
+    // Reproducir sonido aleatorio de victoria civil
+    playWinSound() {
+        const randomEffect = Math.floor(Math.random() * 3) + 1;
+        this.play(`win-effect-${randomEffect}`);
+    },
+
+    // Reproducir sonido aleatorio de derrota civil (victoria impostor)
+    playLoseSound() {
+        const randomEffect = Math.floor(Math.random() * 6) + 1;
+        this.play(`lose-effect-${randomEffect}`);
+    }
+};
+
 const app = {
     screens: ['screen-home', 'screen-setup', 'screen-names', 'screen-categories', 'screen-starter', 'screen-pass', 'screen-reveal', 'screen-game', 'screen-voting'],
     timerInterval: null,
@@ -37,6 +64,12 @@ const app = {
         if(screenId === 'screen-voting') {
             game.initializeVoting();
             this.renderVotingGrid();
+            // Limpiar el resultado anterior
+            const resultDiv = document.getElementById('voting-result');
+            resultDiv.classList.add('hidden');
+            resultDiv.classList.remove('border-rose-600', 'bg-red-900/30', 'border-emerald-600', 'bg-emerald-900/30');
+            resultDiv.classList.add('border-slate-700', 'bg-brand-light');
+            document.getElementById('voting-actions').classList.remove('hidden');
         }
         
         // Si abrimos home, detener temporizador
@@ -80,12 +113,12 @@ const app = {
         Object.keys(categoriesData).forEach(cat => {
             const iconClass = categoryIcons[cat] || "ph-folder";
             const btn = document.createElement('button');
-            btn.className = "bg-brand-light border border-slate-700 hover:border-brand-accent p-4 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-accent text-xs sm:text-sm";
+            btn.className = "p-4 rounded-2xl flex flex-col items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-brand-accent text-xs sm:text-sm font-semibold text-white";
             btn.onclick = () => game.startGame(cat);
             
             btn.innerHTML = `
                 <i class="ph-duotone ${iconClass} text-3xl sm:text-4xl text-brand-accent mb-1"></i>
-                <span class="font-semibold">${cat}</span>
+                <span>${cat}</span>
             `;
             grid.appendChild(btn);
         });
